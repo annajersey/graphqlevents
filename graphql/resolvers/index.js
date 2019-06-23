@@ -5,9 +5,14 @@ const events = eventIds => {
     return Event.find({_id: {$in: eventIds}})
         .then(events => {
             return events.map(event => {
-                return {...event._doc, _id: event.id, creator: user.bind(this, event.creator)}
+                return {
+                    ...event._doc,
+                    _id: event.id,
+                    date: new Date(event._doc.date).toString(),
+                    creator: user.bind(this, event.creator)
+                }
             })
-        }).catch(err=>{
+        }).catch(err => {
             throw err;
         })
 }
@@ -21,7 +26,6 @@ const user = userId => {
 
 module.exports = {
     createEvent: (args) => {
-
         const event = new Event({
             title: args.eventInput.title,
             description: args.eventInput.description,
@@ -35,6 +39,7 @@ module.exports = {
                 createdEvent = {
                     ...result._doc,
                     _id: result._doc._id.toString(),
+                    date: new Date(event._doc.date).toString(),
                     creator: user.bind(this, result._doc.creator)
                 }
                 return User.findById('5ce8ff06101c631b5ca6c998')
@@ -54,36 +59,37 @@ module.exports = {
             });
 
     },
-        createUser: args => {
-    return User.findOne({email: args.userInput.email})
-        .then(user => {
-            if (user) {
-                throw new Error('User exists already')
-            }
-            return bcrypt.hash(args.userInput.password, 12)
-        }).then(hashPassword => {
-            const user = new User({
-                email: args.userInput.email,
-                password: args.userInput.password
-            });
-            return user.save()
-        }).then(result => {
-            return {...result._doc, password: null, _id: result.id}
-        })
-        .catch(err => console.log(err))
+    createUser: args => {
+        return User.findOne({email: args.userInput.email})
+            .then(user => {
+                if (user) {
+                    throw new Error('User exists already')
+                }
+                return bcrypt.hash(args.userInput.password, 12)
+            }).then(hashPassword => {
+                const user = new User({
+                    email: args.userInput.email,
+                    password: args.userInput.password
+                });
+                return user.save()
+            }).then(result => {
+                return {...result._doc, password: null, _id: result.id}
+            })
+            .catch(err => console.log(err))
 
-},
+    },
     events: () => {
-    return Event.find()
-        .then(events => events.map(event => {
-            return {
-                ...event._doc,
-                _id: event.id,
-                creator: user.bind(this, event._doc.creator)
-            }
-        }))
-        .catch(err => {
-            console.log(err)
-        });
-}
+        return Event.find()
+            .then(events => events.map(event => {
+                return {
+                    ...event._doc,
+                    _id: event.id,
+                    date: new Date(event._doc.date).toString(),
+                    creator: user.bind(this, event._doc.creator)
+                }
+            }))
+            .catch(err => {
+                console.log(err)
+            });
+    }
 }
