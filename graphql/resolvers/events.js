@@ -12,13 +12,13 @@ module.exports = {
             description: args.eventInput.description,
             price: +args.eventInput.price,
             date: new Date(args.eventInput.date),
-            creator: "5ce8ff06101c631b5ca6c998"
+            creator: req.userId
         });
         let createdEvent;
         try {
             const result = await event.save()
             createdEvent = transformEvent(result)
-            const creator = await User.findById('5ce8ff06101c631b5ca6c998')
+            const creator = await User.findById(req.userId)
             if (!creator) {
                 throw new Error('User does not exists');
             }
