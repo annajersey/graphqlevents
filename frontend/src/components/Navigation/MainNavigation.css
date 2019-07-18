@@ -38,7 +38,7 @@
 
 .main-navigation__items li a:hover,
 .main-navigation__items li a:active,
-.main-navigation__items li a.active
+.font-main-navigation__items li a.active
 {
     color: #fff
 }
