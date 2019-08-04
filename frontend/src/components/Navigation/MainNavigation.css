@@ -31,7 +31,7 @@
     margin:0 1rem;
 }
 
-.main-navigation__items li a{
+.main-navigation__items li a, .main-navigation__items li button{
     text-decoration: none;
     color: #000
 }
