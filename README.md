@@ -1,1 +1,1 @@
-Learning GraphQL by CodeAcademy tutorial
+Learning GraphQL by AcadeMind tutorial
